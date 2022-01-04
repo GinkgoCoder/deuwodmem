@@ -3,7 +3,8 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 const readline = require('readline')
-const _ = require('lodash')
+const _ = require('lodash');
+const { table } = require('table');
 
 async function retrieveAllWords(filepath) {
   const fileStream = fs.createReadStream(filepath);
@@ -42,7 +43,11 @@ async function testNoun(q, a) {
       console.log('✅');
       return true;
     } else {
-      console.log('❌');
+      const result = [
+        [answers.single, a[0], answers.single === a[0] ? '✅' : '❌'],
+        [answers.plural, a[1], answers.plural === a[1] ? '✅' : '❌'],
+      ]
+      console.log(table(result))
       return false;
     }
   });
@@ -89,7 +94,15 @@ async function testVerb(q, a) {
       console.log('✅');
       return true;
     } else {
-      console.log('❌');
+      const result = [
+        [answers.ich, a[0], answers.ich === a[0] ? '✅' : '❌'],
+        [answers.du, a[1], answers.du === a[1] ? '✅' : '❌'],
+        [answers.ersiees, a[2], answers.ersiees === a[2] ? '✅' : '❌'],
+        [answers.wir, a[3], answers.wir === a[3] ? '✅' : '❌'],
+        [answers.ihr, a[4], answers.ihr === a[4] ? '✅' : '❌'],
+        [answers.sie, a[5], answers.sie === a[5] ? '✅' : '❌'],
+      ];
+      console.log(table(result));
       return false;
     }
   });
