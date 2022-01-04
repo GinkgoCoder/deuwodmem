@@ -108,9 +108,32 @@ async function testVerb(q, a) {
   });
 }
 
+async function testGenWord(q,a) {
+  console.log('翻译:' + q);
+  return inquirer.prompt([
+    {
+      type:'input',
+      name:'spell',
+      message:'拼写'
+    }
+  ]).then(answers => {
+    if (answers.spell === a[0]) {
+      console.log('✅');
+      return true;
+    } else {
+      const result = [
+        [answers.spell, a[0], answers.spell === a[0] ? '✅' : '❌']
+      ];
+      console.log(table(result));
+    }
+  });
+}
+
 async function testOneWord(word) {
   const answers = word.answer.split('-');
-  if (answers.length === 2) {
+  if (answers.length === 1) {
+    return await testGenWord(word.question, answers);
+  } else if (answers.length === 2) {
     return await testNoun(word.question, answers);
   } else {
     return await testVerb(word.question, answers);
