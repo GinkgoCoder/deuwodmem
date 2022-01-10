@@ -29,23 +29,29 @@ async function testNoun(q, a) {
     [
       {
         type: 'input',
+        name: 'gender',
+        message: '词性'
+      },
+      {
+        type: 'input',
         name: 'single',
         message: '单数'
       },
       {
         type: 'input',
         name: 'plural',
-        message: '复数' 
+        message: '复数'
       }
     ]
   ).then(answers => {
-    if (answers.single === a[0] && answers.plural === a[1]) {
+    if (answers.gender === a[0] && answers.single === a[1] && answers.plural === a[2]) {
       console.log('✅');
       return true;
     } else {
       const result = [
-        [answers.single, a[0], answers.single === a[0] ? '✅' : '❌'],
-        [answers.plural, a[1], answers.plural === a[1] ? '✅' : '❌'],
+        [answers.gender, a[0], answers.gender === a[0] ? '✅' : '❌'],
+        [answers.single, a[1], answers.single === a[1] ? '✅' : '❌'],
+        [answers.plural, a[2], answers.plural === a[2] ? '✅' : '❌'],
       ]
       console.log(table(result))
       return false;
@@ -65,31 +71,31 @@ async function testVerb(q, a) {
       {
         type: 'input',
         name: 'du',
-        message: 'du' 
+        message: 'du'
       },
       {
         type: 'input',
         name: 'ersiees',
-        message: 'er/sie/es' 
+        message: 'er/sie/es'
       },
       {
         type: 'input',
         name: 'wir',
-        message: 'wir' 
+        message: 'wir'
       },
       {
         type: 'input',
         name: 'ihr',
-        message: 'ihr' 
+        message: 'ihr'
       },
       {
         type: 'input',
         name: 'sie',
-        message: 'sie/Sie' 
+        message: 'sie/Sie'
       }
     ]
   ).then(answers => {
-    if (answers.ich === a[0] && answers.du === a[1] && answers.ersiees === a[2] 
+    if (answers.ich === a[0] && answers.du === a[1] && answers.ersiees === a[2]
       && answers.wir === a[3] && answers.ihr === a[4] && answers.sie === a[5]) {
       console.log('✅');
       return true;
@@ -108,13 +114,13 @@ async function testVerb(q, a) {
   });
 }
 
-async function testGenWord(q,a) {
+async function testGenWord(q, a) {
   console.log('翻译:' + q);
   return inquirer.prompt([
     {
-      type:'input',
-      name:'spell',
-      message:'拼写'
+      type: 'input',
+      name: 'spell',
+      message: '拼写'
     }
   ]).then(answers => {
     if (answers.spell === a[0]) {
@@ -133,7 +139,7 @@ async function testOneWord(word) {
   const answers = word.answer.split('-');
   if (answers.length === 1) {
     return await testGenWord(word.question, answers);
-  } else if (answers.length === 2) {
+  } else if (answers.length === 3) {
     return await testNoun(word.question, answers);
   } else {
     return await testVerb(word.question, answers);
@@ -143,7 +149,7 @@ async function testOneWord(word) {
 exports.wordstest = async (filepath) => {
   let words = await retrieveAllWords(filepath);
   words = _.shuffle(words);
-  while(words.length > 0) {
+  while (words.length > 0) {
     console.clear();
     const word = words.shift();
     const status = await testOneWord(word);
