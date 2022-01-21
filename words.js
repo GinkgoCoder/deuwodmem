@@ -91,12 +91,18 @@ async function testVerb(q, a) {
       {
         type: 'input',
         name: 'sie',
-        message: 'sie/Sie'
+        message: 'sie/Sie' 
+      },
+      {
+        type: 'input',
+        name: 'perfect',
+        message: '完成时'
       }
     ]
   ).then(answers => {
-    if (answers.ich === a[0] && answers.du === a[1] && answers.ersiees === a[2]
-      && answers.wir === a[3] && answers.ihr === a[4] && answers.sie === a[5]) {
+    if (answers.ich === a[0] && answers.du === a[1] && answers.ersiees === a[2] 
+      && answers.wir === a[3] && answers.ihr === a[4] && answers.sie === a[5]
+      && answers.perfect === a[6]) {
       console.log('✅');
       return true;
     } else {
@@ -107,6 +113,7 @@ async function testVerb(q, a) {
         [answers.wir, a[3], answers.wir === a[3] ? '✅' : '❌'],
         [answers.ihr, a[4], answers.ihr === a[4] ? '✅' : '❌'],
         [answers.sie, a[5], answers.sie === a[5] ? '✅' : '❌'],
+        [answers.perfect, a[6], answers.perfect === a[6] ? '✅' : '❌']
       ];
       console.log(table(result));
       return false;
